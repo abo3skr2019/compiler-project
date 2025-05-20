@@ -1,0 +1,15 @@
+user@example.com
+john.doe123@mail.co.uk
+simple_email@domain.org
+first.last+tag@sub.domain.com
+UPPERCASE@DOMAIN.COM
+@missingusername.com
+missingatsign.com
+double@@at.com
+nodomain@.com
+toolongtld@domain.abcdefghijk
+endswithdot@domain.com.
+noatsuffix@domain
+dotbeforeat.@domain.com
+badchar!in@email.com
+space in@email.com
