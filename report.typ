@@ -125,7 +125,7 @@ The email validator uses more complex regular expressions to match valid email a
  * 4. Username can't have consecutive dots
  * 5. Must have a domain after @ symbol
  * 6. Domain must contain a top-level domain (TLD) after a dot
- * 7. TLD must be between 2-10 characters
+ * 7. TLD must be between 2-63 characters
  * 8. No spaces or special characters outside the allowed set
  */
 %}
