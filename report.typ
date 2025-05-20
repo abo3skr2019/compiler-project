@@ -35,21 +35,17 @@
   #v(3em)
   
   #block[
-    === Submitted By:
+
+    Course Title: #course_code - #course_name
+    
+    Instructor: #instructor_name
+
+    #text(weight: "bold")[Submitted By:]
     #for (i, member) in team_members.enumerate() [
 
       #(i + 1). #member.name  
         - ID: #member.id
-    ]
-    
-    === Course Information
-    Course Title: #course_name
-
-    Course Code: #course_code
-    
-    Instructor: #instructor_name
-    
-    Date: #datetime.today().display("[month repr:long] [day], [year]")
+    ]    
   ]
 ]
 
