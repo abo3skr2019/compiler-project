@@ -22,7 +22,7 @@
 
 /* Rules section - pattern matching rules and associated actions */
 %%
-[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,10} { 
+[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63} { 
     /* Initial regex match for email format with additional validation checks */
     char *at_pos = strchr(yytext, '@');  /* Find position of @ symbol */
     int username_length = at_pos - yytext;  /* Calculate length of username part */

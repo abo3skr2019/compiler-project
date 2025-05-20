@@ -238,4 +238,5 @@ The email validator, in particular, shows how increasingly complex patterns can 
 1. Levine, J., Mason, T., & Brown, D. (1992). Lex & Yacc (2nd ed.). O'Reilly Media.
 2. The flex Manual. https://westes.github.io/flex/manual/
 3. RFC 5322 - Internet Message Format. https://tools.ietf.org/html/rfc5322
-4. Aho, A. V., Lam, M. S., Sethi, R., & Ullman, J. D. (2006). Compilers: Principles, Techniques, and Tools (2nd ed.). Addison Wesley.
+4. RFC 1034 - Domain Names - Concepts and Facilities. https://datatracker.ietf.org/doc/html/rfc1034
+5. Aho, A. V., Lam, M. S., Sethi, R., & Ullman, J. D. (2006). Compilers: Principles, Techniques, and Tools (2nd ed.). Addison Wesley.
