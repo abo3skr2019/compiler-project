@@ -44,7 +44,7 @@
     #for (i, member) in team_members.enumerate() [
 
       #(i + 1). #member.name  
-        - ID: #member.id
+        - University ID: #member.id
     ]    
   ]
 ]
