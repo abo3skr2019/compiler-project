@@ -1,10 +1,7 @@
-#import "@preview/acrostiche:0.3.1": *
-#import "@preview/tablex:0.0.8": tablex, cellx, rowspanx, colspanx
-
 #set document(
   title: "Lexical and Parser Phase Project Report",
   author: "Student Name",
-  date: datetime.today()
+  date: datetime.today(),
 )
 
 #set page(
@@ -13,7 +10,7 @@
 )
 
 #set text(
-  font: "Times New Roman",
+  font: "New Computer Modern",
   size: 12pt,
 )
 
@@ -35,11 +32,11 @@
   #v(3em)
   
   #block[
-    Submitted By: [Student Names]
+    Submitted By: [Your Name]
     
-    ID: [Student IDs]
+    ID: [Your ID]
     
-    Course: [Course Name]
+    Course: Compiler Construction
     
     Instructor: [Instructor Name]
     
@@ -74,7 +71,7 @@ LEX (Lexical Analyzer Generator) and its faster reimplementation FLEX (Fast Lexi
 == Regular Expressions
 Regular expressions are patterns used to match text strings. In the context of lexical analysis, they define the patterns of characters that form valid tokens. Some common components of regular expressions include:
 - Character classes: [a-z], [0-9]
-- Repetition operators: *, +, ?
+- Repetition operators: `*`, `+`, `?`
 - Alternation: |
 - Grouping: ()
 
@@ -92,9 +89,9 @@ The character identifier program uses simple regular expressions to classify inp
 %}
 
 %%
-[a-zA-Z]     { printf("%s is a letter\n", yytext); }
-[0-9]        { printf("%s is a digit\n", yytext); }
-.            { printf("%s is not a letter or digit\n", yytext); }
+[a-zA-Z]     { printf("%s is a letter\n", yytext); }  /* Match any letter */
+[0-9]        { printf("%s is a digit\n", yytext); }   /* Match any digit */
+.            { printf("%s is not a letter or digit\n", yytext); }  /* Match any other character */
 %%
 
 int main() {
@@ -115,12 +112,36 @@ The email validator uses more complex regular expressions to match valid email a
 %{
 #include <stdio.h>
 #include <string.h>
+
+/* Email validation rules:
+ * 1. Must have a username before the @ symbol
+ * 2. Username can contain letters, digits, dots, underscores, percent, plus, and hyphen
+ * 3. Username must not start or end with a dot
+ * 4. Username can't have consecutive dots
+ * 5. Must have a domain after @ symbol
+ * 6. Domain must contain a top-level domain (TLD) after a dot
+ * 7. TLD must be between 2-10 characters
+ * 8. No spaces or special characters outside the allowed set
+ */
 %}
 
 %%
-[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,10}  { 
-    /* Additional validation logic here */
-    printf("%s is a valid email\n", yytext); 
+[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,10} { 
+    /* Initial regex match for email format, with additional validation logic */
+    char *at_pos = strchr(yytext, '@');
+    int username_length = at_pos - yytext;
+    
+    /* Check additional validation rules */
+    if (strstr(yytext, "..") == NULL && 
+        yytext[0] != '.' && 
+        yytext[strlen(yytext)-1] != '.' &&
+        at_pos != NULL &&
+        username_length > 0 &&
+        *(at_pos-1) != '.') {
+        printf("%s is a valid email\n", yytext);
+    } else {
+        printf("%s is an invalid email (invalid format)\n", yytext);
+    }
 }
 /* Various invalid patterns with specific error messages */
 %%
@@ -129,9 +150,9 @@ The email validator uses more complex regular expressions to match valid email a
 ```
 
 The email validation follows these rules:
-1. Must have a username before the @ symbol
+1. Must have a username before the `@` symbol
 2. Username can contain letters, digits, dots, underscores, percent, plus, and hyphen
-3. Must have a domain after @ symbol
+3. Must have a domain after `@` symbol
 4. Domain must contain a top-level domain (TLD) after a dot
 5. TLD must be between 2-10 characters
 6. No spaces or special characters outside the allowed set
@@ -141,9 +162,8 @@ The email validation follows these rules:
 == Character Identifier Test Cases
 The character identifier was tested with various inputs to verify its functionality:
 
-#tablex(
+#table(
   columns: (auto, auto, auto),
-  header-rows: 1,
   align: (center, center, center),
   [*Input*], [*Expected Output*], [*Actual Output*],
   "a", "a is a letter", "a is a letter",
@@ -154,9 +174,8 @@ The character identifier was tested with various inputs to verify its functional
 == Email Validator Test Cases
 The email validator was tested with a variety of valid and invalid email addresses:
 
-#tablex(
+#table(
   columns: (auto, auto, auto),
-  header-rows: 1,
   align: (left, center, center),
   [*Email Address*], [*Expected Result*], [*Actual Result*],
   "user@example.com", "Valid", "Valid",

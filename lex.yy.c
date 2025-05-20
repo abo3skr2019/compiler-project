@@ -537,7 +537,12 @@ int yy_flex_debug = 0;
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
 #line 1 "emailcheck.l"
-#line 2 "emailcheck.l"
+/* 
+ * Email Validation using Flex
+ * This program analyzes strings and determines whether they conform to email address standards.
+ */
+#line 7 "emailcheck.l"
+/* C code section - included at the beginning of the generated C file */
 #include <stdio.h>
 #include <string.h>
 
@@ -551,8 +556,9 @@ char *yytext;
  * 7. TLD must be between 2-10 characters
  * 8. No spaces or special characters outside the allowed set
  */
-#line 554 "lex.yy.c"
-#line 555 "lex.yy.c"
+#line 559 "lex.yy.c"
+/* Rules section - pattern matching rules and associated actions */
+#line 561 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -772,9 +778,9 @@ YY_DECL
 		}
 
 	{
-#line 17 "emailcheck.l"
+#line 24 "emailcheck.l"
 
-#line 777 "lex.yy.c"
+#line 783 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -834,18 +840,19 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 18 "emailcheck.l"
+#line 25 "emailcheck.l"
 { 
-    /* Check for consecutive dots which aren't allowed */
-    char *at_pos = strchr(yytext, '@');
-    int username_length = at_pos - yytext;
+    /* Initial regex match for email format with additional validation checks */
+    char *at_pos = strchr(yytext, '@');  /* Find position of @ symbol */
+    int username_length = at_pos - yytext;  /* Calculate length of username part */
     
-    if (strstr(yytext, "..") == NULL && 
-        yytext[0] != '.' && 
-        yytext[strlen(yytext)-1] != '.' &&
-        at_pos != NULL &&
-        username_length > 0 &&
-        *(at_pos-1) != '.') {
+    /* Check for additional validation rules that regex alone cannot verify */
+    if (strstr(yytext, "..") == NULL &&  /* No consecutive dots */
+        yytext[0] != '.' &&              /* Username doesn't start with dot */
+        yytext[strlen(yytext)-1] != '.' && /* Email doesn't end with dot */
+        at_pos != NULL &&                /* @ symbol exists (redundant due to regex) */
+        username_length > 0 &&           /* Username is not empty */
+        *(at_pos-1) != '.') {            /* Username doesn't end with dot */
         printf("%s is a valid email\n", yytext);
     } else {
         printf("%s is an invalid email (invalid format)\n", yytext);
@@ -854,16 +861,16 @@ YY_RULE_SETUP
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 35 "emailcheck.l"
-{ printf("%s is an invalid email (missing username)\n", yytext); }
+#line 43 "emailcheck.l"
+{ printf("%s is an invalid email (missing username)\n", yytext); }  /* Email starts with @ */
 	YY_BREAK
 case 3:
 *yy_cp = (yy_hold_char); /* undo effects of setting up yytext */
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 36 "emailcheck.l"
-{ printf("%s is an invalid email (missing domain)\n", yytext); }
+#line 44 "emailcheck.l"
+{ printf("%s is an invalid email (missing domain)\n", yytext); }  /* Email ends with @ */
 	YY_BREAK
 case 4:
 /* rule 4 can match eol */
@@ -872,37 +879,37 @@ YY_LINENO_REWIND_TO(yy_cp - 1);
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 37 "emailcheck.l"
-{ printf("%s is an invalid email (missing TLD)\n", yytext); }
+#line 45 "emailcheck.l"
+{ printf("%s is an invalid email (missing TLD)\n", yytext); }  /* No dot after @ */
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 38 "emailcheck.l"
-{ printf("%s is an invalid email (double @ symbol)\n", yytext); }
+#line 46 "emailcheck.l"
+{ printf("%s is an invalid email (double @ symbol)\n", yytext); }  /* Contains multiple @ */
 	YY_BREAK
 case 6:
 /* rule 6 can match eol */
 YY_RULE_SETUP
-#line 39 "emailcheck.l"
-{ printf("%s is an invalid email (contains spaces)\n", yytext); }
+#line 47 "emailcheck.l"
+{ printf("%s is an invalid email (contains spaces)\n", yytext); }  /* Contains whitespace */
 	YY_BREAK
 case 7:
 /* rule 7 can match eol */
 YY_RULE_SETUP
-#line 40 "emailcheck.l"
-{ printf("%s is an invalid email (missing @ symbol)\n", yytext); }
+#line 48 "emailcheck.l"
+{ printf("%s is an invalid email (missing @ symbol)\n", yytext); }  /* No @ symbol */
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 41 "emailcheck.l"
-{ printf("%s is an invalid email (invalid format)\n", yytext); }
+#line 49 "emailcheck.l"
+{ printf("%s is an invalid email (invalid format)\n", yytext); }  /* Catch-all rule */
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 43 "emailcheck.l"
+#line 51 "emailcheck.l"
 ECHO;
 	YY_BREAK
-#line 905 "lex.yy.c"
+#line 912 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1910,14 +1917,16 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 43 "emailcheck.l"
+#line 51 "emailcheck.l"
 
 
+/* C code section - included at the end of the generated C file */
 int main() {
-    FILE *file = fopen("cases", "r");
+    FILE *file = fopen("cases", "r");  /* Open test cases file */
     char line[256];
     
     if (file == NULL) {
+        /* If file can't be opened, process input from stdin */
         printf("Enter an email address: ");
         yylex();
         return 0;
@@ -1938,9 +1947,10 @@ int main() {
         if (line[0] == '/' && line[1] == '/') continue;
         
         printf("Testing: %s\n", line);
+        /* Create a buffer for the scanner to read from the string */
         YY_BUFFER_STATE buffer = yy_scan_string(line);
-        yylex();
-        yy_delete_buffer(buffer);
+        yylex();  /* Process the string */
+        yy_delete_buffer(buffer);  /* Clean up the buffer */
         printf("\n");
     }
     
@@ -1948,6 +1958,7 @@ int main() {
     return 0;
 }
 
+/* yywrap function is called when EOF is reached */
 int yywrap() {
-    return 1;
+    return 1;  /* Return 1 to indicate end of input processing */
 }

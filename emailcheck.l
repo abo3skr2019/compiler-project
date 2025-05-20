@@ -1,4 +1,10 @@
+/* 
+ * Email Validation using Flex
+ * This program analyzes strings and determines whether they conform to email address standards.
+ */
+
 %{
+/* C code section - included at the beginning of the generated C file */
 #include <stdio.h>
 #include <string.h>
 
@@ -14,39 +20,43 @@
  */
 %}
 
+/* Rules section - pattern matching rules and associated actions */
 %%
 [a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,10} { 
-    /* Check for consecutive dots which aren't allowed */
-    char *at_pos = strchr(yytext, '@');
-    int username_length = at_pos - yytext;
+    /* Initial regex match for email format with additional validation checks */
+    char *at_pos = strchr(yytext, '@');  /* Find position of @ symbol */
+    int username_length = at_pos - yytext;  /* Calculate length of username part */
     
-    if (strstr(yytext, "..") == NULL && 
-        yytext[0] != '.' && 
-        yytext[strlen(yytext)-1] != '.' &&
-        at_pos != NULL &&
-        username_length > 0 &&
-        *(at_pos-1) != '.') {
+    /* Check for additional validation rules that regex alone cannot verify */
+    if (strstr(yytext, "..") == NULL &&  /* No consecutive dots */
+        yytext[0] != '.' &&              /* Username doesn't start with dot */
+        yytext[strlen(yytext)-1] != '.' && /* Email doesn't end with dot */
+        at_pos != NULL &&                /* @ symbol exists (redundant due to regex) */
+        username_length > 0 &&           /* Username is not empty */
+        *(at_pos-1) != '.') {            /* Username doesn't end with dot */
         printf("%s is a valid email\n", yytext);
     } else {
         printf("%s is an invalid email (invalid format)\n", yytext);
     }
 }
 
-^@.*                         { printf("%s is an invalid email (missing username)\n", yytext); }
-.*@$                         { printf("%s is an invalid email (missing domain)\n", yytext); }
-.*@[^.]*$                    { printf("%s is an invalid email (missing TLD)\n", yytext); }
-.*@@.*                       { printf("%s is an invalid email (double @ symbol)\n", yytext); }
-.*[[:space:]].*              { printf("%s is an invalid email (contains spaces)\n", yytext); }
-[^@]*                        { printf("%s is an invalid email (missing @ symbol)\n", yytext); }
-.+                           { printf("%s is an invalid email (invalid format)\n", yytext); }
+^@.*                         { printf("%s is an invalid email (missing username)\n", yytext); }  /* Email starts with @ */
+.*@$                         { printf("%s is an invalid email (missing domain)\n", yytext); }  /* Email ends with @ */
+.*@[^.]*$                    { printf("%s is an invalid email (missing TLD)\n", yytext); }  /* No dot after @ */
+.*@@.*                       { printf("%s is an invalid email (double @ symbol)\n", yytext); }  /* Contains multiple @ */
+.*[[:space:]].*              { printf("%s is an invalid email (contains spaces)\n", yytext); }  /* Contains whitespace */
+[^@]*                        { printf("%s is an invalid email (missing @ symbol)\n", yytext); }  /* No @ symbol */
+.+                           { printf("%s is an invalid email (invalid format)\n", yytext); }  /* Catch-all rule */
 
 %%
 
+/* C code section - included at the end of the generated C file */
 int main() {
-    FILE *file = fopen("cases", "r");
+    FILE *file = fopen("cases", "r");  /* Open test cases file */
     char line[256];
     
     if (file == NULL) {
+        /* If file can't be opened, process input from stdin */
         printf("Enter an email address: ");
         yylex();
         return 0;
@@ -67,9 +77,10 @@ int main() {
         if (line[0] == '/' && line[1] == '/') continue;
         
         printf("Testing: %s\n", line);
+        /* Create a buffer for the scanner to read from the string */
         YY_BUFFER_STATE buffer = yy_scan_string(line);
-        yylex();
-        yy_delete_buffer(buffer);
+        yylex();  /* Process the string */
+        yy_delete_buffer(buffer);  /* Clean up the buffer */
         printf("\n");
     }
     
@@ -77,6 +88,7 @@ int main() {
     return 0;
 }
 
+/* yywrap function is called when EOF is reached */
 int yywrap() {
-    return 1;
+    return 1;  /* Return 1 to indicate end of input processing */
 }
