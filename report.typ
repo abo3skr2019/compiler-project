@@ -32,9 +32,11 @@
   #v(3em)
   
   #block[
-    Submitted By: [Your Name]
-    
-    ID: [Your ID]
+    Submitted By:
+    1. [Team Member 1 Name]  ID: [Member 1 ID]
+    2. [Team Member 2 Name]  ID: [Member 2 ID]
+    3. [Team Member 3 Name]  ID: [Member 3 ID]
+    4. [Team Member 4 Name]  ID: [Member 4 ID]
     
     Course: Compiler Construction
     
