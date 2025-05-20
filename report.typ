@@ -1,6 +1,9 @@
+// Import team members information
+#import "team_members.typ": team_members, course_name, course_code,instructor_name
+
 #set document(
   title: "Lexical and Parser Phase Project Report",
-  author: "Student Name",
+  author: team_members.map(m => m.name).join(", "),
   date: datetime.today(),
 )
 
@@ -32,15 +35,19 @@
   #v(3em)
   
   #block[
-    Submitted By:
-    1. [Team Member 1 Name]  ID: [Member 1 ID]
-    2. [Team Member 2 Name]  ID: [Member 2 ID]
-    3. [Team Member 3 Name]  ID: [Member 3 ID]
-    4. [Team Member 4 Name]  ID: [Member 4 ID]
+    === Submitted By:
+    #for (i, member) in team_members.enumerate() [
+
+      #(i + 1). #member.name  
+        - ID: #member.id
+    ]
     
-    Course: Compiler Construction
+    === Course Information
+    Course Title: #course_name
+
+    Course Code: #course_code
     
-    Instructor: [Instructor Name]
+    Instructor: #instructor_name
     
     Date: #datetime.today().display("[month repr:long] [day], [year]")
   ]
