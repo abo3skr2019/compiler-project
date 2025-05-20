@@ -48,7 +48,7 @@
     ]    
   
   #text(weight: "bold")[Code can be Found at:]
-  
+
   https://github.com/abo3skr2019/compiler-project
   ]
 ]
@@ -135,7 +135,7 @@ The email validator uses more complex regular expressions to match valid email a
 %}
 
 %%
-[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,10} { 
+[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63} { 
     /* Initial regex match for email format, with additional validation logic */
     char *at_pos = strchr(yytext, '@');
     int username_length = at_pos - yytext;
@@ -163,7 +163,7 @@ The email validation follows these rules:
 2. Username can contain letters, digits, dots, underscores, percent, plus, and hyphen
 3. Must have a domain after `@` symbol
 4. Domain must contain a top-level domain (TLD) after a dot
-5. TLD must be between 2-10 characters
+5. TLD must be between 2-63 characters
 6. No spaces or special characters outside the allowed set
 
 = Test Cases and Results
